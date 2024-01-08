@@ -91,27 +91,10 @@ export const addArticleToAuthor = async(userId, articleId) => {
     if(updateResult.modifiedCount !== 1){
         throw articleNotAddedToAuthor(functionSignature, userId, articleId);
     }
+    console.log(articleNotAddedToAuthor(functionSignature, userId, articleId));
     return await getUserById(userId);
 }
-/*
 
-export const addApartmentToBookmark = async (userId, apartmentId) => {
-  userId = helpers.checkString(userId, "userId");
-  apartmentId = helpers.checkId(apartmentId, "apartmentId");
-
-  const userCollection = await users();
-  const updateResult = await userCollection.updateOne(
-    { _id: userId },
-    { $addToSet: { bookmarkedApartments: new ObjectId(apartmentId) } }
-  );
-
-  if (updateResult.modifiedCount !== 1) {
-    throw `Apartment ${apartmentId} could not be bookmarked by user ${userId}`;
-  }
-  return await getUserById(userId);
-};
-
-*/
 const cleanUserObject = async (userObject) => {
     delete userObject.password;
     userObject._id = userObject._id.toString();
