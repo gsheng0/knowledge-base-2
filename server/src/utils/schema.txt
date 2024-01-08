@@ -1,0 +1,15 @@
+User:{
+    _id: ObjectID
+    username: String
+    password: String
+    email: String
+    articles: [String]
+}
+
+Article{
+    _id: ObjectID
+    title: String
+    content: String
+    author: String
+    tags: [String]
+}
