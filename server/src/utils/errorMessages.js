@@ -29,10 +29,26 @@ export const userNotDeletedFromDatabase = (functionSignature, id) => {
     return `${functionSignature}: Failed to delete user with id '${id}' from datebase`;
 }
 
-export const articleNotAddedToUser = (functionSignature, userId, articleId) => {
+export const articleAddedToUser = (functionSignature, userId, articleId) => {
     return `${functionSignature}: Successfully registered article with id '${articleId}' to user with id ${userId}`;
 }
 
-export const articleNotAddedToAuthor = (functionSignature, userId, articleId) => {
-    return `${functionSignature}: Failed to register article with id '${articleId}' to user with id '${userId}`
+export const articleNotAddedToUser = (functionSignature, userId, articleId) => {
+    return `${functionSignature}: Failed to register article with id '${articleId}' to user with id '${userId}`;
+}
+
+export const articleRemovedFromAuthor = (functionSignature, userId, articleId) => {
+    return `${functionSignature}: Successfully removed article with id '${articleId}' from user with id '${userId}'`;
+}
+
+export const articleNotRemovedFromAuthor = (functionSignature, userId, articleId) => {
+    return `${functionSignature}: Failed to remove article with id '${articleId}' from user with id '${userId}'`;
+}
+
+export const articleSuccessfullyCreated = (functionSignature, title) => {
+    return `${functionSignature}: Successfully created article with title '${title}'`
+}
+
+export const articleNotCreated = (functionSignature, title) => {
+    return `${functionSignature}: Failed to create article with title '${title}'`
 }

@@ -3,7 +3,7 @@ import { getUserCollection} from "./../configs/mongoCollection.js";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import * as helpers from "./../utils/helpers.js";
-import { userNotCreated, userNotFound, objectIdNotValid, allUsersRetrievedFromDatabase, userRetrievedFromDatabase, userSuccessfullyCreated, userNotDeletedFromDatabase, articleNotAddedToAuthor } from "../utils/errorMessages.js";
+import { userNotCreated, userNotFound, objectIdNotValid, allUsersRetrievedFromDatabase, userRetrievedFromDatabase, userSuccessfullyCreated, userNotDeletedFromDatabase, articleNotAddedToUser, articleAddedToUser } from "../utils/errorMessages.js";
 
 export const createUser = async(email, username, password) => {
     const functionSignature = helpers.getFunctionSignature("CreateUser");
@@ -89,11 +89,40 @@ export const addArticleToAuthor = async(userId, articleId) => {
         { $addToSet: { articles: new ObjectId(articleId) } }
     );
     if(updateResult.modifiedCount !== 1){
-        throw articleNotAddedToAuthor(functionSignature, userId, articleId);
+        throw articleNotAddedToUser(functionSignature, userId, articleId);
     }
-    console.log(articleNotAddedToAuthor(functionSignature, userId, articleId));
+    console.log(articleAddedToUser(functionSignature, userId, articleId));
     return await getUserById(userId);
 }
+
+export const removeArticleFromAuthor = async (userId, articleId) => {
+    const functionSignature = helpers.getFunctionSignature("UnregisterArticleWithUser");
+
+    if (!ObjectId.isValid(userId)) {
+        throw objectIdNotValid(functionSignature, userId);
+    }
+
+    if (!ObjectId.isValid(articleId)) {
+        throw objectIdNotValid(functionSignature, articleId);
+    }
+
+    const userCollection = await getUserCollection();
+    //TODO: Check to see if article exists
+    
+
+    const updateResult = await userCollection.updateOne(
+        { _id: userId },
+        { $pull: { articles: new ObjectId(articleId) } }
+    );
+
+    if (updateResult.modifiedCount !== 1) {
+        throw articleNotRemovedFromAuthor(functionSignature, userId, articleId);
+    }
+
+    console.log(articleRemovedFromAuthor(functionSignature, userId, articleId));
+
+    return await getUserById(userId);
+};
 
 const cleanUserObject = async (userObject) => {
     delete userObject.password;

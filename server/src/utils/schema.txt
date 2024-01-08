@@ -10,6 +10,6 @@ Article{
     _id: ObjectID
     title: String
     content: String
-    author: String
+    authorId: String
     tags: [String]
 }
