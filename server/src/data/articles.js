@@ -3,7 +3,7 @@ import { getArticleCollection } from "../configs/mongoCollection";
 import validator from "validator";
 import * as helpers from "./../utils/helpers.js";
 import * as users from "./users.js";
-import { allArticlesRetrievedFromDatabase, articleNotCreated, articleNotDeletedFromDatabase, articleNotFound, articleRetrievedFromDatabase, articleSuccessfullyCreated, objectIdNotValid } from "../utils/errorMessages.js";
+import { allArticlesByAuthorIdRetrievedFromDatabase, allArticlesRetrievedFromDatabase, articleNotCreated, articleNotDeletedFromDatabase, articleNotFound, articleRetrievedFromDatabase, articleSuccessfullyCreated, objectIdNotValid } from "../utils/errorMessages.js";
 
 export const createArticle = async(title, content, tags, authorId) => {
     const functionSignature = helpers.getFunctionSignature("CreateArticle");
@@ -47,6 +47,14 @@ export const getAllArticles = async() => {
     const articleCollection = await getArticleCollection();
     const articles = await articleCollection.find({}).toArray();
     console.log(allArticlesRetrievedFromDatabase(functionSignature));
+    return cleanArticleObjects(articles);
+}
+
+export const getAllArticlesByAuthorId = async(authorId) => {
+    const functionSignature = helpers.getFunctionSignature("GetAllArticlesByAuthorId");
+    const articleCollection = await getArticleCollection();
+    const articles = await articleCollection.find({authorId: authorId}).toArray();
+    console.log(allArticlesByAuthorIdRetrievedFromDatabase(functionSignature, authorId));
     return cleanArticleObjects(articles);
 }
 

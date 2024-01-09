@@ -68,3 +68,7 @@ export const articleSuccessfullyCreated = (functionSignature, title) => {
 export const articleNotCreated = (functionSignature, title) => {
     return `${functionSignature}: Failed to create article with title '${title}'`
 }
+
+export const allArticlesByAuthorIdRetrievedFromDatabase = (functionSignature, authorId) => {
+    return `${functionSignature}: Successfully retrieved all articles by author with id '${authorId}' from database`;
+}
