@@ -68,7 +68,7 @@ export const deleteUserById = async(id) => {
     if(!user){
         throw userNotFound(functionSignature, id);
     }
-    const result = await userCollection.deleteOne(getIdFilter(id));
+    const result = await userCollection.deleteOne({_id: id});
     if (result.deletedCount !== 1) {
         throw userNotDeletedFromDatabase(functionSignature, id);
     }

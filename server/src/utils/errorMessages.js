@@ -1,5 +1,9 @@
 export const userNotFound = (functionSignature, id) => {
-    return `${functionSignature}: User with id '${id}' was not found`
+    return `${functionSignature}: User with id '${id}' was not found`;
+}
+
+export const articleNotFound = (functionSignature, id) => {
+    return `${functionSignature}: Article with id '${id}' was not found`;
 }
 
 export const objectIdNotValid = (functionSignature, id) => {
@@ -21,12 +25,24 @@ export const allUsersRetrievedFromDatabase = (functionSignature) => {
     return `${functionSignature}: Retrieved all users from database`;
 }
 
+export const articleRetrievedFromDatabase = (functionSignature, id) => {
+    return `${functionSignature}: Retrieved article with id '${id}' from database`;
+}
+
+export const allArticlesRetrievedFromDatabase = (functionSignature) => {
+    return `${functionSignature}: Retrieved all articles from database`;
+}
+
 export const userDeletedFromDatabase = (functionSignature, id) => {
     return `${functionSignature}: Successfully deleted user with id '${id}' from database`;
 }
 
 export const userNotDeletedFromDatabase = (functionSignature, id) => {
-    return `${functionSignature}: Failed to delete user with id '${id}' from datebase`;
+    return `${functionSignature}: Failed to delete user with id '${id}' from database`;
+}
+
+export const articleNotDeletedFromDatabase = (functionSignature, id) => {
+    return `${functionSignature}: Failed to delete article with id '${id}' from database`;
 }
 
 export const articleAddedToUser = (functionSignature, userId, articleId) => {
