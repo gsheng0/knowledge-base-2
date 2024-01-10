@@ -11,7 +11,6 @@ export const main = async() => {
             `user${i}`,
             `pAssword${i}$!${i}`
         ));
-        console.log(`Created User #${i}`);
     }
 
     for(let i = 0; i < 100; i++){
@@ -21,7 +20,6 @@ export const main = async() => {
             getRandomTags(),
             users[getRandomInt(0, users.length)]._id
         ));
-        console.log(`Created Article #${i}`);
     }
     console.log("Done Seeding Database");
 }

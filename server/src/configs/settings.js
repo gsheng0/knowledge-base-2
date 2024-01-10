@@ -1,4 +1,5 @@
+// You will need to change the DB name to match the required DB name in the assignment specs!
 export const mongoConfig = {
-  serverUrl: "mongodb://mongodb:27017/",
-  database: "Knowledge-Base",
-};
+    serverUrl: 'mongodb://localhost:27017/',
+    database: 'Knowledge-Base'
+  };

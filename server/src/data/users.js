@@ -33,7 +33,7 @@ export const createUser = async(email, username, password) => {
         throw userNotCreated(functionSignature, email);
     }
     console.log(userSuccessfullyCreated(functionSignature, email));
-    return await getUserById(output.insertedId);
+    return cleanUserObject(await userCollection.findOne({_id: output.insertedId}));
 }
 
 export const getUserById = async(id) => {
@@ -42,7 +42,7 @@ export const getUserById = async(id) => {
         throw objectIdNotValid(functionSignature, id);
     }
     const userCollection = await getUserCollection();
-    const user = await userCollection.findOne({_id: id});
+    const user = await userCollection.findOne({_id: new ObjectId(id)});
     if(!user){
         throw userNotFound(functionSignature, id);
     }
@@ -76,8 +76,8 @@ export const deleteUserById = async(id) => {
 }
 
 export const addArticleToAuthor = async(userId, articleId) => {
-    const functionSignature = helpers.getFunctionSignature("RegisterArticleWithUser");
-    if(!ObjectId.isValid(id)){
+    const functionSignature = helpers.getFunctionSignature("AddArticleToAuthor");
+    if(!ObjectId.isValid(userId)){
         throw objectIdNotValid(functionSignature, userId);
     }
     if(!ObjectId.isValid(articleId)){
@@ -85,7 +85,7 @@ export const addArticleToAuthor = async(userId, articleId) => {
     }
     const userCollection = await getUserCollection();
     const updateResult = await userCollection.updateOne(
-        { _id: userId},
+        { _id: new ObjectId(userId)},
         { $addToSet: { articles: new ObjectId(articleId) } }
     );
     if(updateResult.modifiedCount !== 1){
@@ -96,7 +96,7 @@ export const addArticleToAuthor = async(userId, articleId) => {
 }
 
 export const removeArticleFromAuthor = async (userId, articleId) => {
-    const functionSignature = helpers.getFunctionSignature("UnregisterArticleWithUser");
+    const functionSignature = helpers.getFunctionSignature("RemoveArticleFromAuthor");
 
     if (!ObjectId.isValid(userId)) {
         throw objectIdNotValid(functionSignature, userId);
