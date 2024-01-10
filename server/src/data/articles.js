@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { getArticleCollection } from "../configs/mongoCollection";
+import { getArticleCollection } from "../configs/mongoCollection.js";
 import validator from "validator";
 import * as helpers from "./../utils/helpers.js";
 import * as users from "./users.js";

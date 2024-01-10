@@ -3,7 +3,7 @@ import { getUserCollection} from "./../configs/mongoCollection.js";
 import bcrypt from "bcrypt";
 import validator from "validator";
 import * as helpers from "./../utils/helpers.js";
-import { userNotCreated, userNotFound, objectIdNotValid, allUsersRetrievedFromDatabase, userRetrievedFromDatabase, userSuccessfullyCreated, userNotDeletedFromDatabase, articleNotAddedToUser, articleAddedToUser } from "../utils/errorMessages.js";
+import { userNotCreated, userNotFound, objectIdNotValid, allUsersRetrievedFromDatabase, userRetrievedFromDatabase, userSuccessfullyCreated, userNotDeletedFromDatabase, articleNotAddedToUser, articleAddedToUser, articleNotFound } from "../utils/errorMessages.js";
 
 export const createUser = async(email, username, password) => {
     const functionSignature = helpers.getFunctionSignature("CreateUser");
@@ -107,7 +107,20 @@ export const removeArticleFromAuthor = async (userId, articleId) => {
     }
 
     const userCollection = await getUserCollection();
-    //TODO: Check to see if article exists
+    const user = await userCollection.findOne({_id: userId});
+    if(!user){
+        throw userNotFound(functionSignature, userId);
+    }
+
+    let found = false;
+    for(let i = 0; i < user.articles.length; i++){
+        if(user.articles[i].valueOf() === articleId.valueOf()){
+            found = true;
+        }
+    }
+    if(!found){
+        throw articleNotFound(functionSignature, articleId);
+    }
     
 
     const updateResult = await userCollection.updateOne(
