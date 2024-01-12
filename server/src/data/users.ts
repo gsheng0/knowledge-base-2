@@ -20,7 +20,7 @@ import { getFunctionSignature } from "../utils/helpers";
 import { User } from "../model/user";
 
 export const createUser = async (email: string, username: string, password: string): Promise<User> => {
-    const functionSignature = getFunctionSignature("CreateUser");
+    const functionSignature: string = getFunctionSignature("CreateUser");
     email = validator.trim(email);
     username = validator.trim(username);
 
@@ -34,7 +34,7 @@ export const createUser = async (email: string, username: string, password: stri
         throw `${functionSignature}: '${password}' is not a valid password`;
     }
 
-    const user = {
+    const user: User = {
         email,
         username,
         password: bcrypt.hashSync(password, 16),
@@ -51,12 +51,12 @@ export const createUser = async (email: string, username: string, password: stri
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-    const functionSignature = getFunctionSignature("GetUserById");
+    const functionSignature: string = getFunctionSignature("GetUserById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
     }
     const userCollection = await getUserCollection();
-    const user = await userCollection.findOne({ _id: new ObjectId(id) });
+    const user: User = await userCollection.findOne({ _id: new ObjectId(id) });
     if (!user) {
         throw userNotFound(functionSignature, id);
     }
@@ -65,7 +65,7 @@ export const getUserById = async (id: string): Promise<User> => {
 };
 
 export const getAllUsers = async (): Promise<User[]> => {
-    const functionSignature = getFunctionSignature("GetAllUsers");
+    const functionSignature: string = getFunctionSignature("GetAllUsers");
     const userCollection = await getUserCollection();
     const users: User[] = await userCollection.find({}).toArray();
     console.log(allUsersRetrievedFromDatabase(functionSignature));
@@ -73,7 +73,7 @@ export const getAllUsers = async (): Promise<User[]> => {
 };
 
 export const deleteUserById = async (id: string): Promise<User> => {
-    const functionSignature = getFunctionSignature("DeleteUserById");
+    const functionSignature: string = getFunctionSignature("DeleteUserById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
     }
@@ -90,7 +90,7 @@ export const deleteUserById = async (id: string): Promise<User> => {
 };
 
 export const addArticleToAuthor = async (userId: string, articleId: string): Promise<User> => {
-    const functionSignature = getFunctionSignature("AddArticleToAuthor");
+    const functionSignature: string = getFunctionSignature("AddArticleToAuthor");
     if (!ObjectId.isValid(userId)) {
         throw objectIdNotValid(functionSignature, userId);
     }
@@ -110,23 +110,21 @@ export const addArticleToAuthor = async (userId: string, articleId: string): Pro
 };
 
 export const removeArticleFromAuthor = async (userId: string, articleId: string): Promise<User> => {
-    const functionSignature = getFunctionSignature("RemoveArticleFromAuthor");
-
+    const functionSignature: string = getFunctionSignature("RemoveArticleFromAuthor");
     if (!ObjectId.isValid(userId)) {
         throw objectIdNotValid(functionSignature, userId);
     }
-
     if (!ObjectId.isValid(articleId)) {
         throw objectIdNotValid(functionSignature, articleId);
     }
 
     const userCollection = await getUserCollection();
-    const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+    const user: User = await userCollection.findOne({ _id: new ObjectId(userId) });
     if (!user) {
         throw userNotFound(functionSignature, userId);
     }
 
-    let found = false;
+    let found: boolean = false;
     for (let i = 0; i < user.articles.length; i++) {
         if (user.articles[i].valueOf() === articleId.valueOf()) {
             found = true;
