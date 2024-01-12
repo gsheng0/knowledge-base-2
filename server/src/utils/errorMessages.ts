@@ -76,3 +76,7 @@ export const allArticlesByAuthorIdRetrievedFromDatabase = (functionSignature: st
 export const articleWithTitleAlreadyExists = (functionSignature: string, title: string): string => {
     return `${functionSignature}: An article with title '${title}' already exists`;
 }
+
+export const userWithEmailAlreadyExists = (functionSignature: string, email: string): string => {
+    return `${functionSignature}: A user with email '${email}' already exists`;
+}

@@ -46,7 +46,7 @@ export const createArticle = async (title: string, content: string, tags: string
     }
     console.log(articleSuccessfullyCreated(functionSignature, title));
     await addArticleToAuthor(authorId, output.insertedId);
-    return await getArticleById(output.insertedId);
+    return cleanArticleObject(await articleCollection.findOne({_id: output.insertedId}));
 };
 
 export const getArticleById = async (id: string): Promise<Article> => {

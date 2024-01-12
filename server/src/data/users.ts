@@ -12,7 +12,8 @@ import {
     articleNotAddedToUser,
     articleAddedToUser,
     objectIdNotValid,
-    articleNotFound
+    articleNotFound,
+    userWithEmailAlreadyExists
 } from "../utils/errorMessages";
 import { getUserCollection } from "../configs/mongoCollection";
 import { ObjectId } from "mongodb";
@@ -42,6 +43,11 @@ export const createUser = async (email: string, username: string, password: stri
     };
 
     const userCollection = await getUserCollection();
+    const emailInUse = await userCollection.findOne({email: email});
+    if(emailInUse){
+        throw userWithEmailAlreadyExists(functionSignature, email);
+    }
+
     const output = await userCollection.insertOne(user);
     if (!output.acknowledged || !output.insertedId) {
         throw userNotCreated(functionSignature, email);
@@ -106,7 +112,7 @@ export const addArticleToAuthor = async (userId: string, articleId: string): Pro
         throw articleNotAddedToUser(functionSignature, userId, articleId);
     }
     console.log(articleAddedToUser(functionSignature, userId, articleId));
-    return await getUserById(userId);
+    return cleanUserObject(await userCollection.findOne({_id: userId}));
 };
 
 export const removeArticleFromAuthor = async (userId: string, articleId: string): Promise<User> => {
@@ -143,7 +149,7 @@ export const removeArticleFromAuthor = async (userId: string, articleId: string)
         throw articleNotRemovedFromAuthor(functionSignature, userId, articleId);
     }
     console.log(articleRemovedFromAuthor(functionSignature, userId, articleId));
-    return await getUserById(userId);
+    return cleanUserObject(await userCollection.findOne({_id: userId}));
 };
 
 const cleanUserObject = (userObject: User): User => {
