@@ -1,17 +1,25 @@
-import { dbConnection } from './mongoConnections.js';
-
-const getCollectionFn = (collection) => {
-  let _col = undefined;
-
-  return async () => {
-    if (!_col) {
-      const db = await dbConnection();
-      _col = await db.collection(collection);
-    }
-
-    return _col;
-  };
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-export const getUserCollection = getCollectionFn("users");
-export const getArticleCollection = getCollectionFn("articles");
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getArticleCollection = exports.getUserCollection = void 0;
+const mongoConnections_js_1 = require("./mongoConnections.js");
+const getCollectionFn = (collection) => {
+    let _col = undefined;
+    return () => __awaiter(void 0, void 0, void 0, function* () {
+        if (!_col) {
+            const db = yield (0, mongoConnections_js_1.dbConnection)();
+            _col = yield db.collection(collection);
+        }
+        return _col;
+    });
+};
+exports.getUserCollection = getCollectionFn("users");
+exports.getArticleCollection = getCollectionFn("articles");
