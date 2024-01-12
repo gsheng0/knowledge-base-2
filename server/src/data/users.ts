@@ -17,8 +17,9 @@ import {
 import { getUserCollection } from "../configs/mongoCollection";
 import { ObjectId } from "mongodb";
 import { getFunctionSignature } from "../utils/helpers";
+import { User } from "../model/user";
 
-export const createUser = async (email: string, username: string, password: string) => {
+export const createUser = async (email: string, username: string, password: string): Promise<User> => {
     const functionSignature = getFunctionSignature("CreateUser");
     email = validator.trim(email);
     username = validator.trim(username);
@@ -49,7 +50,7 @@ export const createUser = async (email: string, username: string, password: stri
     return cleanUserObject(await userCollection.findOne({ _id: output.insertedId }));
 };
 
-export const getUserById = async (id: string) => {
+export const getUserById = async (id: string): Promise<User> => {
     const functionSignature = getFunctionSignature("GetUserById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
@@ -63,21 +64,21 @@ export const getUserById = async (id: string) => {
     return cleanUserObject(user);
 };
 
-export const getAllUsers = async (): Promise<string[]> => {
+export const getAllUsers = async (): Promise<User[]> => {
     const functionSignature = getFunctionSignature("GetAllUsers");
     const userCollection = await getUserCollection();
-    const users = await userCollection.find({}).toArray();
+    const users: User[] = await userCollection.find({}).toArray();
     console.log(allUsersRetrievedFromDatabase(functionSignature));
     return cleanUserObjects(users);
 };
 
-export const deleteUserById = async (id: string) => {
+export const deleteUserById = async (id: string): Promise<User> => {
     const functionSignature = getFunctionSignature("DeleteUserById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
     }
     const userCollection = await getUserCollection();
-    const user = await userCollection.findOne({ _id: new ObjectId(id) });
+    const user: User = await userCollection.findOne({ _id: new ObjectId(id) });
     if (!user) {
         throw userNotFound(functionSignature, id);
     }
@@ -88,7 +89,7 @@ export const deleteUserById = async (id: string) => {
     return cleanUserObject(user);
 };
 
-export const addArticleToAuthor = async (userId: string, articleId: string) => {
+export const addArticleToAuthor = async (userId: string, articleId: string): Promise<User> => {
     const functionSignature = getFunctionSignature("AddArticleToAuthor");
     if (!ObjectId.isValid(userId)) {
         throw objectIdNotValid(functionSignature, userId);
@@ -108,7 +109,7 @@ export const addArticleToAuthor = async (userId: string, articleId: string) => {
     return await getUserById(userId);
 };
 
-export const removeArticleFromAuthor = async (userId: string, articleId: string) => {
+export const removeArticleFromAuthor = async (userId: string, articleId: string): Promise<User> => {
     const functionSignature = getFunctionSignature("RemoveArticleFromAuthor");
 
     if (!ObjectId.isValid(userId)) {
@@ -143,19 +144,16 @@ export const removeArticleFromAuthor = async (userId: string, articleId: string)
     if (updateResult.modifiedCount !== 1) {
         throw articleNotRemovedFromAuthor(functionSignature, userId, articleId);
     }
-
     console.log(articleRemovedFromAuthor(functionSignature, userId, articleId));
-
     return await getUserById(userId);
 };
 
-const cleanUserObject = async (userObject: any) => {
-    delete userObject.password;
+const cleanUserObject = (userObject: User): User => {
     userObject._id = userObject._id.toString();
     return userObject;
 };
 
-const cleanUserObjects = async (userObjects: any[]) => {
+const cleanUserObjects = (userObjects: User[]): User[] => {
     for (let i = 0; i < userObjects.length; i++) {
         userObjects[i] = cleanUserObject(userObjects[i]);
     }

@@ -8,26 +8,38 @@ import {
     allArticlesRetrievedFromDatabase,
     allArticlesByAuthorIdRetrievedFromDatabase,
     articleNotDeletedFromDatabase,
-    objectIdNotValid
+    objectIdNotValid,
+    articleWithTitleAlreadyExists
 } from "../utils/errorMessages";
 import { getArticleCollection } from "../configs/mongoCollection";
 import { ObjectId } from "mongodb";
 import { addArticleToAuthor, getUserById } from "./users";
+import { Article } from "../model/article";
+import { User } from "../model/user";
 
-export const createArticle = async (title: string, content: string, tags: string[], authorId: string) => {
+export const createArticle = async (title: string, content: string, tags: string[], authorId: string): Promise<Article> => {
     const functionSignature = getFunctionSignature("CreateArticle");
+    const articleCollection = await getArticleCollection();
     title = validator.trim(title);
     content = validator.trim(content);
 
-    const author = await getUserById(authorId);
-    // TODO: Check for duplicate titles
+    const author: User = await getUserById(authorId);
+    for(let i = 0; i < author.articles.length; i++){
+        const articleId = author.articles[i];
+        const article: Article = articleCollection.findOne({_id: articleId});
+        //TODO: Maybe validate that article was retrieved?
+        if(article.title.valueOf() === title.valueOf()){
+            throw articleWithTitleAlreadyExists(functionSignature, title);
+        }
+    }
+
     const article = {
         title,
         content,
         tags,
         authorId
     };
-    const articleCollection = await getArticleCollection();
+    
     const output = await articleCollection.insertOne(article);
     if (!output.acknowledged || !output.insertedId) {
         throw articleNotCreated(functionSignature, title);
@@ -37,7 +49,7 @@ export const createArticle = async (title: string, content: string, tags: string
     return await getArticleById(output.insertedId);
 };
 
-export const getArticleById = async (id: string) => {
+export const getArticleById = async (id: string): Promise<Article> => {
     const functionSignature = getFunctionSignature("GetArticleById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
@@ -51,7 +63,7 @@ export const getArticleById = async (id: string) => {
     return cleanArticleObject(article);
 };
 
-export const getAllArticles = async () => {
+export const getAllArticles = async (): Promise<Article[]> => {
     const functionSignature = getFunctionSignature("GetAllUsers");
     const articleCollection = await getArticleCollection();
     const articles = await articleCollection.find({}).toArray();
@@ -59,7 +71,7 @@ export const getAllArticles = async () => {
     return cleanArticleObjects(articles);
 };
 
-export const getAllArticlesByAuthorId = async (authorId: string) => {
+export const getAllArticlesByAuthorId = async (authorId: string): Promise<Article[]> => {
     const functionSignature = getFunctionSignature("GetAllArticlesByAuthorId");
     const articleCollection = await getArticleCollection();
     const articles = await articleCollection.find({ authorId: authorId }).toArray();
@@ -67,7 +79,7 @@ export const getAllArticlesByAuthorId = async (authorId: string) => {
     return cleanArticleObjects(articles);
 };
 
-export const deleteArticleById = async (id: string) => {
+export const deleteArticleById = async (id: string): Promise<Article> => {
     const functionSignature = getFunctionSignature("DeleteUserById");
     if (!ObjectId.isValid(id)) {
         throw objectIdNotValid(functionSignature, id);
@@ -84,14 +96,14 @@ export const deleteArticleById = async (id: string) => {
     return cleanArticleObject(article);
 };
 
-export const cleanArticleObject = async (articleObject: any) => {
+export const cleanArticleObject = (articleObject: Article): Article => {
     articleObject._id = articleObject._id.toString();
     return articleObject;
 };
 
-export const cleanArticleObjects = async (articleObjects: any[]) => {
+export const cleanArticleObjects = (articleObjects: Article[]): Article[] => {
     for (let i = 0; i < articleObjects.length; i++) {
-        articleObjects[i] = await cleanArticleObject(articleObjects[i]);
+        articleObjects[i] = cleanArticleObject(articleObjects[i]);
     }
     return articleObjects;
 };

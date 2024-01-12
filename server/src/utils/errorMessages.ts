@@ -72,3 +72,7 @@ export const articleNotCreated = (functionSignature: string, title: string): str
 export const allArticlesByAuthorIdRetrievedFromDatabase = (functionSignature: string, authorId: string): string => {
     return `${functionSignature}: Successfully retrieved all articles by author with id '${authorId}' from database`;
 };
+
+export const articleWithTitleAlreadyExists = (functionSignature: string, title: string): string => {
+    return `${functionSignature}: An article with title '${title}' already exists`;
+}
