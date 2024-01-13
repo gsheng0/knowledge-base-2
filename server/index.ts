@@ -2,12 +2,14 @@ import { ApolloServer } from "apollo-server-express";
 import express from "express";
 import http from "http";
 import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
+import typeDefs from './src/model/typeDefs';
+import resolvers from "./src/model/resolvers";
 
-const startApolloServer= async(schema: any, resolvers: any) => {
+const startApolloServer = async(typeDefs: any, resolvers: any) => {
     const app = express();
     const httpServer = http.createServer(app);
     const server = new ApolloServer({
-        typeDefs: schema,
+        typeDefs,
         resolvers,
         plugins: [ApolloServerPluginDrainHttpServer({ httpServer})]
     }) as any;
@@ -18,4 +20,4 @@ const startApolloServer= async(schema: any, resolvers: any) => {
   );
   console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
 }
-
+startApolloServer(typeDefs, resolvers);
