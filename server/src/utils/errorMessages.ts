@@ -80,3 +80,19 @@ export const articleWithTitleAlreadyExists = (functionSignature: string, title: 
 export const userWithEmailAlreadyExists = (functionSignature: string, email: string): string => {
     return `${functionSignature}: A user with email '${email}' already exists`;
 }
+
+export const userWithEmailNotFound = (functionSignature: string, email: string): string => {
+    return `${functionSignature}: User with email '${email}' not found`;
+}
+
+export const validatedUserWithEmail = (functionSignature: string, email: string): string => {
+    return `${functionSignature}: User with email '${email}' was validated`;
+}
+
+export const userWithUsernameNotFound = (functionSignature: string, username: string): string => {
+    return `${functionSignature}: User with username '${username}' not found`;
+}
+
+export const validatedUserWithUsername = (functionSignature: string, username: string): string => {
+    return `${functionSignature}: User with username '${username} was validated`;
+}

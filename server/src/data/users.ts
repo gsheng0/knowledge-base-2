@@ -1,4 +1,4 @@
-import validator from "validator";
+import validator, { trim } from "validator";
 import bcrypt from "bcrypt";
 import { 
     userNotCreated, 
@@ -13,12 +13,16 @@ import {
     articleAddedToUser,
     objectIdNotValid,
     articleNotFound,
-    userWithEmailAlreadyExists
+    userWithEmailAlreadyExists,
+    validatedUserWithEmail,
+    validatedUserWithUsername,
+    userWithUsernameNotFound
 } from "../utils/errorMessages";
 import { getUserCollection } from "../configs/mongoCollection";
 import { ObjectId } from "mongodb";
 import { getFunctionSignature } from "../utils/helpers";
 import { User } from "../model/user";
+import { userWithEmailNotFound } from '../utils/errorMessages';
 
 export const createUser = async (email: string, username: string, password: string): Promise<User> => {
     const functionSignature: string = getFunctionSignature("CreateUser");
@@ -151,6 +155,45 @@ export const removeArticleFromAuthor = async (userId: string, articleId: string)
     console.log(articleRemovedFromAuthor(functionSignature, userId, articleId));
     return cleanUserObject(await userCollection.findOne({_id: userId}));
 };
+
+export const checkUserWithEmail = async(email: string, password: string): Promise<User> => {
+    const functionSignature: string = getFunctionSignature("CreateUser");
+    email = trim(email);
+    password = trim(password);
+    if (!validator.isEmail(email)) {
+        throw `${functionSignature}: '${email}' is not a valid email`;
+    }
+    const userCollection = await getUserCollection();
+    const users: [User] = await userCollection.find({email: email}).toArray();
+    for(let i = 0; i < users.length; i++){
+        const user: User = users[i];
+        if(await bcrypt.compare(user.password, password)){
+            console.log(validatedUserWithEmail(functionSignature, email));
+            return cleanUserObject(user);
+        }
+    }
+    throw userWithEmailNotFound(functionSignature, email);
+    
+}
+
+export const checkUserWithUsername = async(username: string, password: string): Promise<User> => {
+    const functionSignature: string = getFunctionSignature("CheckUserWithUsername");
+    username = trim(username);
+    password = trim(password);
+    if (!validator.isAlphanumeric(username)) {
+        throw `${functionSignature}: '${username}' is not a valid username`;
+    }
+    const userCollection = await getUserCollection();
+    const users: [User] = await userCollection.find({username: username}).toArray();
+    for(let i = 0; i < users.length; i++){
+        const user: User = users[i];
+        if(await bcrypt.compare(user.password, password)){
+            console.log(validatedUserWithUsername(functionSignature, username));
+            return cleanUserObject(user);
+        }
+    }
+    throw userWithUsernameNotFound(functionSignature, username);
+}
 
 const cleanUserObject = (userObject: User): User => {
     userObject._id = userObject._id.toString();
