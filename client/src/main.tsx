@@ -6,9 +6,7 @@ import Error from "./components/Error.tsx";
 import SignIn from "./components/SignIn.tsx";
 import SignUp from "./components/SignUp.jsx";
 import Account from "./components/Account.jsx";
-
-import { initializeApp } from "firebase/app";
-//import { getAnalytics } from "firebase/analytics";
+import Users from "./components/Users.tsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -24,7 +22,7 @@ import "./index.css";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({
-    uri: "http://localhost:3000",
+    uri: "http://localhost:4000/graphql",
   }),
 });
 
@@ -51,6 +49,10 @@ const router = createBrowserRouter([
       {
         path: "/account",
         element: <Account />,
+      },
+      {
+        path: "/users",
+        element: <Users/>
       }
     ],
   },

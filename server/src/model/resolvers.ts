@@ -2,7 +2,8 @@ import {
     getUserById, 
     deleteUserById, 
     addArticleToAuthor, 
-    removeArticleFromAuthor, 
+    removeArticleFromAuthor,
+    getAllUsers, 
 } from '../data/users';  // Import your database methods
 
 import {
@@ -15,38 +16,38 @@ import {
 
 const resolvers = {
   Query: {
-    users: async () => {
-      // Implement logic to retrieve all users
+    users: async (_: any) => {
+      return await getAllUsers();
     },
     getUserById: async (_: any, { id }: { id: string }) => {
-      return getUserById(id);
+      return await getUserById(id);
     },
     articles: async (_: any, { authorId }: { authorId: string}) => {
       if (authorId) {
-        return getAllArticlesByAuthorId(authorId);
+        return await getAllArticlesByAuthorId(authorId);
       } else {
-        return getAllArticles();
+        return await getAllArticles();
       }
     },
     getArticleById: async (_: any, { id }: { id: string}) => {
-      return getArticleById(id);
+      return await getArticleById(id);
     },
   },
   Mutation: {
     deleteUserById: async (_: any, { id }: { id: string }) => {
-      return deleteUserById(id);
+      return await deleteUserById(id);
     },
     addArticleToAuthor: async (_: any, { userId, articleId }: { userId: string, articleId: string}) => {
-      return addArticleToAuthor(userId, articleId);
+      return await addArticleToAuthor(userId, articleId);
     },
     removeArticleFromAuthor: async (_: any, { userId, articleId }: { userId: string, articleId: string}) => {
-      return removeArticleFromAuthor(userId, articleId);
+      return await removeArticleFromAuthor(userId, articleId);
     },
     createArticle: async (_: any, { title, content, tags, authorId }: { title: string, content: string, tags: [string], authorId: string}) => {
-      return createArticle(title, content, tags, authorId);
+      return await createArticle(title, content, tags, authorId);
     },
     deleteArticleById: async (_: any, { id }: { id: string }) => {
-      return deleteArticleById(id);
+      return await deleteArticleById(id);
     },
   },
 };
