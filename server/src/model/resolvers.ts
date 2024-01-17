@@ -1,3 +1,4 @@
+import { checkUserWithEmail, checkUserWithUsername } from '../data/users';
 import { 
     getUserById, 
     deleteUserById, 
@@ -22,6 +23,12 @@ const resolvers = {
     getUserById: async (_: any, { id }: { id: string }) => {
       return await getUserById(id);
     },
+    checkUserWithEmail: async(_: any, { email, password }: {email: string, password: string}) => {
+        return await checkUserWithEmail(email, password);
+    },
+    checkUserWithUsername: async(_: any, { username, password }: {username: string, password: string}) => {
+        return await checkUserWithUsername(username, password);
+    },
     articles: async (_: any, { authorId }: { authorId: string}) => {
       if (authorId) {
         return await getAllArticlesByAuthorId(authorId);
@@ -31,7 +38,7 @@ const resolvers = {
     },
     getArticleById: async (_: any, { id }: { id: string}) => {
       return await getArticleById(id);
-    },
+    }
   },
   Mutation: {
     deleteUserById: async (_: any, { id }: { id: string }) => {

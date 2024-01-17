@@ -19,6 +19,8 @@ const typeDefs = gql`
     type Query {
         users: [User]
         getUserById(id: String!): User
+        checkUserWithEmail(email: String!, password: String!): User
+        checkUserWithUsername(username: String!, password: String!): User
 
         articles(authorId: String): [Article]        
         getArticleById(id: String!): Article

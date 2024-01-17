@@ -29,6 +29,34 @@ export const getUserById = (): any => {
   `;
 };
 
+export const checkUserWithEmail = (): any => {
+    return gql`
+        query($email: String!, $password: String!){
+            checkUserWithEmail(email: $email, password: $password){
+                _id
+                username
+                password
+                email
+                articles
+            }
+        }
+    `
+}
+
+export const checkUserWithUsername = (): any => {
+    return gql`
+        query($username: String!, $password: String!){
+            checkUserWithUsername(username: $username, password: $password){
+                _id
+                username
+                password
+                email
+                articles
+            }
+        }
+    `
+}
+
 export const getArticles = (): any => {
   return gql`
     query($authorId: String) {
