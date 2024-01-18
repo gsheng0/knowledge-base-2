@@ -26,8 +26,7 @@ export const createArticle = async (title: string, content: string, tags: string
     const author: User = await getUserById(authorId);
     for(let i = 0; i < author.articles.length; i++){
         const articleId: string = author.articles[i];
-        const article: Article = articleCollection.findOne({_id: articleId});
-        //TODO: Maybe validate that article was retrieved?
+        const article: Article = await articleCollection.findOne({_id: articleId});
         if(article.title.valueOf() === title.valueOf()){
             throw articleWithTitleAlreadyExists(functionSignature, title);
         }

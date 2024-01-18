@@ -1,13 +1,31 @@
+import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
+import { checkUserWithUsername } from '../graphql/Queries';
+import bcrypt from "bcrypt";
 
 const SignIn: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const [checkUser, { loading, error, data }] = useLazyQuery(checkUserWithUsername());
+
   const handleSignIn = () => {
-    
-    
+    checkUser({
+      variables: { username, password},
+    });
   };
+
+  // You can handle loading, error, and data here
+  if (loading) {
+    console.log("Loading");
+  }
+  if (error) {
+    console.log(`Error: ${error.message}`);
+  }
+  if (data) {
+    console.log(data);
+    // You may want to perform further actions based on the data
+  }
 
   return (
     <div>

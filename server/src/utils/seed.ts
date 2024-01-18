@@ -9,7 +9,7 @@ export const main = async() => {
         users.push(await usersDb.createUser(
             `user${i}@email.com`,
             `user${i}`,
-            `pAssword${i}$!${i}`
+            `pAssword${i}%!${i}`
         ));
     }
 

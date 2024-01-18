@@ -42,7 +42,7 @@ export const createUser = async (email: string, username: string, password: stri
     const user: User = {
         email,
         username,
-        password: bcrypt.hashSync(password, 16),
+        password: await bcrypt.hash(password, 16),
         articles: []
     };
 
@@ -116,7 +116,7 @@ export const addArticleToAuthor = async (userId: string, articleId: string): Pro
         throw articleNotAddedToUser(functionSignature, userId, articleId);
     }
     console.log(articleAddedToUser(functionSignature, userId, articleId));
-    return cleanUserObject(await userCollection.findOne({_id: userId}));
+    return cleanUserObject(await userCollection.findOne({_id: new ObjectId(userId)}));
 };
 
 export const removeArticleFromAuthor = async (userId: string, articleId: string): Promise<User> => {
@@ -159,7 +159,7 @@ export const removeArticleFromAuthor = async (userId: string, articleId: string)
 export const checkUserWithEmail = async(email: string, password: string): Promise<User> => {
     const functionSignature: string = getFunctionSignature("CreateUser");
     email = trim(email);
-    password = trim(password);
+    password = await bcrypt.hash(trim(password), 16);
     if (!validator.isEmail(email)) {
         throw `${functionSignature}: '${email}' is not a valid email`;
     }
@@ -179,7 +179,7 @@ export const checkUserWithEmail = async(email: string, password: string): Promis
 export const checkUserWithUsername = async(username: string, password: string): Promise<User> => {
     const functionSignature: string = getFunctionSignature("CheckUserWithUsername");
     username = trim(username);
-    password = trim(password);
+    password = trim(password)
     if (!validator.isAlphanumeric(username)) {
         throw `${functionSignature}: '${username}' is not a valid username`;
     }
@@ -187,7 +187,9 @@ export const checkUserWithUsername = async(username: string, password: string): 
     const users: [User] = await userCollection.find({username: username}).toArray();
     for(let i = 0; i < users.length; i++){
         const user: User = users[i];
-        if(await bcrypt.compare(user.password, password)){
+        console.log(user.password);
+        console.log(password);
+        if(await bcrypt.compare(password, user.password)){
             console.log(validatedUserWithUsername(functionSignature, username));
             return cleanUserObject(user);
         }
