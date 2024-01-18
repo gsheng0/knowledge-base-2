@@ -187,8 +187,6 @@ export const checkUserWithUsername = async(username: string, password: string): 
     const users: [User] = await userCollection.find({username: username}).toArray();
     for(let i = 0; i < users.length; i++){
         const user: User = users[i];
-        console.log(user.password);
-        console.log(password);
         if(await bcrypt.compare(password, user.password)){
             console.log(validatedUserWithUsername(functionSignature, username));
             return cleanUserObject(user);
