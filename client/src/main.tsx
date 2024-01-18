@@ -18,6 +18,7 @@ import {
 } from "@apollo/client";
 
 import "./index.css";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -59,7 +60,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
+
   <ApolloProvider client={client}>
     <RouterProvider router={router} />
   </ApolloProvider>
+
 );

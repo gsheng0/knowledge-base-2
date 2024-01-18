@@ -1,31 +1,35 @@
-import { useLazyQuery } from '@apollo/client';
 import React, { useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
 import { checkUserWithUsername } from '../graphql/Queries';
-import bcrypt from "bcrypt";
+import { Navigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext'; // Import useAuth hook
 
 const SignIn: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const { isAuthenticated, signIn } = useAuth(); // Use useAuth hook
+
   const [checkUser, { loading, error, data }] = useLazyQuery(checkUserWithUsername());
 
   const handleSignIn = () => {
     checkUser({
-      variables: { username, password},
+      variables: { username, password },
     });
   };
 
-  // You can handle loading, error, and data here
   if (loading) {
-    console.log("Loading");
+    console.log('Loading');
   }
   if (error) {
     console.log(`Error: ${error.message}`);
   }
   if (data) {
     console.log(data);
-    // You may want to perform further actions based on the data
+    signIn(username, password); // Call signIn when authentication is successful
+    return <Navigate to="/" />;
   }
+  console.log(isAuthenticated);
 
   return (
     <div>
