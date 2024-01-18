@@ -8,7 +8,7 @@ const SignIn: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const { isAuthenticated, signIn } = useAuth(); // Use useAuth hook
+  const { isAuthenticated, signIn, userInfo} = useAuth(); // Use useAuth hook
 
   const [checkUser, { loading, error, data }] = useLazyQuery(checkUserWithUsername());
 
@@ -25,11 +25,11 @@ const SignIn: React.FC = () => {
     console.log(`Error: ${error.message}`);
   }
   if (data) {
-    console.log(data);
-    signIn(username, password); // Call signIn when authentication is successful
+    console.log(JSON.stringify(data.checkUserWithUsername));
+    signIn(data.checkUserWithUsername); // Call signIn when authentication is successful
     return <Navigate to="/" />;
   }
-  console.log(isAuthenticated);
+  console.log(userInfo);
 
   return (
     <div>

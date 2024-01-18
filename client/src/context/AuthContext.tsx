@@ -1,30 +1,35 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { User } from '../model/user';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  signIn: (username: string, password: string) => void;
+  signIn: (userInfo: User) => void;
   signOut: () => void;
+  userInfo: User | null;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider: any = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
 
-  const signIn = (username: string, password: string) => {
+  const signIn = (userInfo: User) => {
     // Perform your authentication logic here
     // If authentication is successful, update isAuthenticated
     setIsAuthenticated(true);
+    setUserInfo(userInfo);
   };
 
   const signOut = () => {
     // Perform sign-out logic here
     // Update isAuthenticated to false
     setIsAuthenticated(false);
+    setUserInfo(null);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, signOut, userInfo }}>
       {children}
     </AuthContext.Provider>
   );
