@@ -9,7 +9,9 @@ export const getUsers = (): any => {
         username
         password
         email
-        articles
+        articles{
+            title
+        }
       }
     }
   `;
@@ -23,7 +25,6 @@ export const getUserById = (): any => {
         username
         password
         email
-        articles
       }
     }
   `;
@@ -37,7 +38,6 @@ export const checkUserWithEmail = (): any => {
                 username
                 password
                 email
-                articles
             }
         }
     `
@@ -51,7 +51,6 @@ export const checkUserWithUsername = (): any => {
                 username
                 password
                 email
-                articles
             }
         }
     `
@@ -64,7 +63,9 @@ export const getArticles = (): any => {
         _id
         title
         content
-        authorId
+        author{
+            username
+        }
         tags
       }
     }
@@ -78,7 +79,9 @@ export const getArticleById = (): any => {
         _id
         title
         content
-        authorId
+        author {
+            username
+        }
         tags
       }
     }

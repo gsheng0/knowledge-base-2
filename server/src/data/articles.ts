@@ -63,7 +63,7 @@ export const getArticleById = async (id: string): Promise<Article> => {
 };
 
 export const getAllArticles = async (): Promise<Article[]> => {
-    const functionSignature: string = getFunctionSignature("GetAllUsers");
+    const functionSignature: string = getFunctionSignature("GetAllArticles");
     const articleCollection = await getArticleCollection();
     const articles: Article[] = await articleCollection.find({}).toArray();
     console.log(allArticlesRetrievedFromDatabase(functionSignature));
@@ -73,7 +73,7 @@ export const getAllArticles = async (): Promise<Article[]> => {
 export const getAllArticlesByAuthorId = async (authorId: string): Promise<Article[]> => {
     const functionSignature: string = getFunctionSignature("GetAllArticlesByAuthorId");
     const articleCollection = await getArticleCollection();
-    const articles: Article[] = await articleCollection.find({ authorId: authorId }).toArray();
+    const articles: Article[] = await articleCollection.find({ author: authorId }).toArray();
     console.log(allArticlesByAuthorIdRetrievedFromDatabase(functionSignature, authorId));
     return cleanArticleObjects(articles);
 };

@@ -21,11 +21,9 @@ const resolvers = {
   Query: {
     users: async (_: any) => {
       const users = await getAllUsers();
-      console.log(users);
       return users;
     },
     getUserById: async (_: any, { id }: { id: string }) => {
-        console.log(`Fetched user by id ${id}`);
       return await getUserById(id);
     },
     checkUserWithEmail: async(_: any, { email, password }: {email: string, password: string}) => {
@@ -35,7 +33,6 @@ const resolvers = {
         return await checkUserWithUsername(username, password);
     },
     articles: async (_: any, { authorId }: { authorId: string}) => {
-        console.log(`Looking for articles by author with id ${authorId}`);
       if (authorId) {
         const articles = await getAllArticlesByAuthorId(authorId);
         return articles;
@@ -45,7 +42,6 @@ const resolvers = {
       }
     },
     getArticleById: async (_: any, { id }: { id: string}) => {
-        console.log(`Fetched article by id ${id}`);
       return await getArticleById(id);
     }
   },
@@ -70,7 +66,9 @@ const resolvers = {
     author: async (parentValue: Article) => await getUserById(parentValue.author)
   },
   User:{
-    articles: async (parentValue: User) => await getAllArticlesByAuthorId(parentValue._id)
+    articles: async (parentValue: User) => {
+        return await getAllArticlesByAuthorId(parentValue._id)
+    }
   }
 };
 

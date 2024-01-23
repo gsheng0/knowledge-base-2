@@ -8,7 +8,9 @@ export const deleteUserById= (): any => {
           username
           password
           email
-          articles
+          articles {
+            title
+          }
         }
       }
     `;
@@ -22,7 +24,9 @@ export const deleteUserById= (): any => {
           username
           password
           email
-          articles
+          articles {
+            title
+          }
         }
       }
     `;
@@ -36,7 +40,9 @@ export const deleteUserById= (): any => {
           username
           password
           email
-          articles
+          articles {
+            title
+          }
         }
       }
     `;
@@ -44,12 +50,14 @@ export const deleteUserById= (): any => {
   
   export const createArticle = (): any => {
     return gql`
-      mutation createArticle{
-        createArticle($title: String!, $content: String!, $tags: [String], $authorId: String!) {
+      mutation createArticle($title: String!, $content: String!, $tags: [String], $authorId: String!){
+        createArticle(title: $title, content: $content, tags: $tags, authorId: $authorId) {
           _id
           title
           content
-          authorId
+          author {
+            username
+          }
           tags
         }
       }
@@ -63,7 +71,9 @@ export const deleteUserById= (): any => {
           _id
           title
           content
-          authorId
+          author {
+            username
+          }
           tags
         }
       }
