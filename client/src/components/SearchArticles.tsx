@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useLazyQuery, useQuery } from '@apollo/client';
-import { getArticlePreviews } from '../graphql/Queries';
+import { getArticlePreviews, searchAllArticles } from '../graphql/Queries';
 import ArticlePreviewCard from './ArticlePreviewCard';
 import { Article } from '../model/article';
 
 
-const AllArticles: React.FC = () => {
+const SearchArticles: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState("");
+    const [searchArticle, {loading, error, data}] = useLazyQuery(searchAllArticles());
     useEffect(() => {
         console.log(searchTerm);
+        searchArticle({
+            variables: { searchTerm }
+        })
     },
     [searchTerm])
-    const { loading, error, data } = useQuery(getArticlePreviews());
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
+    if(!data) return <p>Error retrieving data</p>
+    console.log(data.searchArticle);
     let articles: Article[] = []
-    for(let i = data.articles.length - 1; i >= 0; i--){
-        articles.push(data.articles[i]);
+    for(let i = data.searchArticle.length - 1; i >= 0; i--){
+        articles.push(data.searchArticle[i]);
     }
 
     return (
@@ -36,4 +41,4 @@ const AllArticles: React.FC = () => {
     );
 };
 
-export default AllArticles;
+export default SearchArticles;

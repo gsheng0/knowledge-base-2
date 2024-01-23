@@ -22,6 +22,8 @@ import "./index.css";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import WriteArticle from "./components/WriteArticle.tsx";
 import AllArticles from "./components/AllArticles.tsx";
+import AllMyArticles from "./components/AllMyArticles.tsx";
+import SearchArticles from "./components/SearchArticles.tsx";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -70,6 +72,14 @@ const router = createBrowserRouter([
         path: "/article/:articleId", // Dynamic path with articleId parameter
         element: <Article />,
       },
+      {
+        path: "/myArticles",
+        element: <AllMyArticles/>
+      },
+      {
+        path: "/search",
+        element: <SearchArticles/>
+      }
     ],
   },
 ]);

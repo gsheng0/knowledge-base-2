@@ -24,6 +24,7 @@ const typeDefs = gql`
 
         articles(authorId: String): [Article]        
         getArticleById(id: String!): Article
+        searchArticle(searchTerm: String): [Article]
     }
       
     type Mutation {

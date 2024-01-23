@@ -21,6 +21,11 @@ export const NavBar = () => {
           <Nav.Link href="/articles">Articles</Nav.Link>
           <Nav.Link href="/users">Users</Nav.Link>
           <Nav.Link href="/write">Write</Nav.Link>
+          {
+            isAuthenticated ? (
+                <Nav.Link href="/myArticles">My Articles</Nav.Link>
+            ):(<></>)
+          }
         </Nav>
         {isAuthenticated ? (
           // If authenticated, show "Sign Out" option

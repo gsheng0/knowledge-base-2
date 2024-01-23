@@ -16,6 +16,7 @@ import {
 } from "../data/articles";
 import { Article } from './article';
 import { User } from './user';
+import { searchArticle } from '../data/articles';
 
 const resolvers = {
   Query: {
@@ -43,6 +44,9 @@ const resolvers = {
     },
     getArticleById: async (_: any, { id }: { id: string}) => {
       return await getArticleById(id);
+    },
+    searchArticle: async (_: any, {searchTerm}: { searchTerm: string}) => {
+        return await searchArticle(searchTerm);
     }
   },
   Mutation: {

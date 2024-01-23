@@ -96,3 +96,7 @@ export const userWithUsernameNotFound = (functionSignature: string, username: st
 export const validatedUserWithUsername = (functionSignature: string, username: string): string => {
     return `${functionSignature}: User with username '${username}' was validated`;
 }
+
+export const articlesMatchingSearchSuccessfullyRetrieved = (functionSignature: string, searchTerm: string): string => {
+    return `${functionSignature}: Articles matching the search term ${searchTerm} were successfully retrieved`;
+}

@@ -16,6 +16,7 @@ import { ObjectId } from "mongodb";
 import { addArticleToAuthor, getUserById } from "./users";
 import { Article } from "../model/article";
 import { User } from "../model/user";
+import { articlesMatchingSearchSuccessfullyRetrieved } from '../utils/errorMessages';
 
 export const createArticle = async (title: string, content: string, tags: string[], authorId: string): Promise<Article> => {
     const functionSignature: string = getFunctionSignature("CreateArticle");
@@ -94,6 +95,29 @@ export const deleteArticleById = async (id: string): Promise<Article> => {
     }
     return cleanArticleObject(article);
 };
+
+export const searchArticle = async(searchTerm: string) => {
+    if(!searchTerm){
+        return await getAllArticles();
+    }
+    searchTerm = searchTerm.toLowerCase();
+    const functionSignature: string = getFunctionSignature("SearchArticle");
+    const articleCollection = await getArticleCollection();
+    const articles: Article[] = await articleCollection.find({}).toArray();
+    const matchedArticles: Article[] = [];
+    for(let i = 0; i < articles.length; i++){
+        const article = articles[i];
+        if(article.content.toLowerCase().includes(searchTerm)){
+            matchedArticles.push(article);
+            continue;
+        }
+        if(article.title.toLowerCase().includes(searchTerm)){
+            matchedArticles.push(article);
+        }
+    }
+    console.log(articlesMatchingSearchSuccessfullyRetrieved(functionSignature, searchTerm));
+    return matchedArticles;
+}
 
 export const cleanArticleObject = (articleObject: Article): Article => {
     articleObject._id = articleObject._id.toString();
