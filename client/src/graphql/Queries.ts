@@ -72,6 +72,21 @@ export const getArticles = (): any => {
   `;
 };
 
+export const getArticlePreviews = (): any => {
+    return gql`
+    query {
+        articles {
+          title
+          tags
+          author {
+            username
+          }
+          _id
+        }
+      }
+    `
+}
+
 export const getArticleById = (): any => {
   return gql`
     query($id: String!) {

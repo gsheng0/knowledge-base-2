@@ -54,7 +54,7 @@ export const getArticleById = async (id: string): Promise<Article> => {
         throw objectIdNotValid(functionSignature, id);
     }
     const articleCollection = await getArticleCollection();
-    const article: Article = await articleCollection.findOne({ _id: id });
+    const article: Article = await articleCollection.findOne({ _id: new ObjectId(id) });
     if (!article) {
         throw articleNotFound(functionSignature, id);
     }

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
-import { getArticles } from '../graphql/Queries';
+import { getArticlePreviews } from '../graphql/Queries';
 import ArticlePreviewCard from './ArticlePreviewCard';
 import { Article } from '../model/article';
 
 
 const AllArticles: React.FC = () => {
-    const { loading, error, data } = useQuery(getArticles());
+    const { loading, error, data } = useQuery(getArticlePreviews());
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;

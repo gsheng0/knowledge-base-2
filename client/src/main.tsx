@@ -6,8 +6,8 @@ import Error from "./components/Error.tsx";
 import SignIn from "./components/SignIn.tsx";
 import SignUp from "./components/SignUp.jsx";
 import Account from "./components/Account.jsx";
-import Users from "./components/Users.tsx";
 import AllUsers from "./components/AllUsers.tsx";
+import Article from "./components/Article.tsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -65,7 +65,11 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <AllUsers/>
-      }
+      },
+      {
+        path: "/article/:articleId", // Dynamic path with articleId parameter
+        element: <Article />,
+      },
     ],
   },
 ]);

@@ -65,9 +65,13 @@ const resolvers = {
   Article: {
     author: async (parentValue: Article) => await getUserById(parentValue.author)
   },
-  User:{
+  User:{//TODO: Rewrite this to not use getAll
     articles: async (parentValue: User) => {
-        return await getAllArticlesByAuthorId(parentValue._id)
+        let articles: Article[] = [];
+        for(let i = 0; i < parentValue.articles.length; i++){
+            articles.push(await getArticleById(parentValue.articles[i]));
+        }
+        return articles;
     }
   }
 };

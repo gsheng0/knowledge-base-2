@@ -9,7 +9,7 @@ function App() {
     <AuthProvider>
         <div>
             <NavBar/>
-          <Outlet />
+            <Outlet />
         </div>
     </AuthProvider>
   );

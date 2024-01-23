@@ -11,6 +11,9 @@ import '../index.css';
       <Container>
         <Nav className="me-auto">
           <Nav.Link href="/">Home</Nav.Link>
+          <Nav.Link href="/articles">Articles</Nav.Link>
+          <Nav.Link href="/users">Users</Nav.Link>
+          <Nav.Link href="/write">Write</Nav.Link>
           <Nav.Link href="/sign-in">Sign In</Nav.Link>
           <Nav.Link href="/sign-up">Sign Up</Nav.Link>
         </Nav>
