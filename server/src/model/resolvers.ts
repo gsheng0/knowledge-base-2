@@ -5,7 +5,7 @@ import {
     addArticleToAuthor, 
     removeArticleFromAuthor,
     getAllUsers, 
-} from '../data/users';  // Import your database methods
+} from '../data/users'; 
 
 import {
     createArticle, 
@@ -14,13 +14,18 @@ import {
     getAllArticles, 
     getAllArticlesByAuthorId 
 } from "../data/articles";
+import { Article } from './article';
+import { User } from './user';
 
 const resolvers = {
   Query: {
     users: async (_: any) => {
-      return await getAllUsers();
+      const users = await getAllUsers();
+      console.log(users);
+      return users;
     },
     getUserById: async (_: any, { id }: { id: string }) => {
+        console.log(`Fetched user by id ${id}`);
       return await getUserById(id);
     },
     checkUserWithEmail: async(_: any, { email, password }: {email: string, password: string}) => {
@@ -30,13 +35,17 @@ const resolvers = {
         return await checkUserWithUsername(username, password);
     },
     articles: async (_: any, { authorId }: { authorId: string}) => {
+        console.log(`Looking for articles by author with id ${authorId}`);
       if (authorId) {
-        return await getAllArticlesByAuthorId(authorId);
+        const articles = await getAllArticlesByAuthorId(authorId);
+        return articles;
       } else {
-        return await getAllArticles();
+        const articles = await getAllArticles();
+        return articles;
       }
     },
     getArticleById: async (_: any, { id }: { id: string}) => {
+        console.log(`Fetched article by id ${id}`);
       return await getArticleById(id);
     }
   },
@@ -57,6 +66,12 @@ const resolvers = {
       return await deleteArticleById(id);
     },
   },
+  Article: {
+    author: async (parentValue: Article) => await getUserById(parentValue.author)
+  },
+  User:{
+    articles: async (parentValue: User) => await getAllArticlesByAuthorId(parentValue._id)
+  }
 };
 
 export default resolvers;

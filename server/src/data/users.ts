@@ -110,7 +110,7 @@ export const addArticleToAuthor = async (userId: string, articleId: string): Pro
     const userCollection = await getUserCollection();
     const updateResult = await userCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $addToSet: { articles: new ObjectId(articleId) } }
+        { $addToSet: { articles: articleId } }
     );
     if (updateResult.modifiedCount !== 1) {
         throw articleNotAddedToUser(functionSignature, userId, articleId);

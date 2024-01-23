@@ -1,10 +1,10 @@
 import { gql } from "apollo-server-express";
 const typeDefs = gql`
     type Article {
-        _id: String
+        _id: ID
         title: String!
         content: String!
-        authorId: String!
+        author: User!
         tags: [String]
     }
 
@@ -13,7 +13,7 @@ const typeDefs = gql`
         username: String!
         password: String!
         email: String!
-        articles: [String]
+        articles: [Article]
     }
     
     type Query {
@@ -24,7 +24,6 @@ const typeDefs = gql`
 
         articles(authorId: String): [Article]        
         getArticleById(id: String!): Article
-
     }
       
     type Mutation {
@@ -37,4 +36,4 @@ const typeDefs = gql`
     }
 `;
 
-export default typeDefs
+export default typeDefs;

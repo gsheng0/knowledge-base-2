@@ -36,7 +36,7 @@ export const createArticle = async (title: string, content: string, tags: string
         title,
         content,
         tags,
-        authorId
+        author: authorId
     };
     
     const output = await articleCollection.insertOne(article);

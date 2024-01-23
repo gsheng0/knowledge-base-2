@@ -18,7 +18,7 @@ export const main = async() => {
             `Title #${i}`,
             `Content of Article #${i}`,
             getRandomTags(),
-            users[getRandomInt(0, users.length)]._id
+            users[getRandomInt(0, users.length)]._id.toString()
         ));
     }
     console.log("Done Seeding Database");
