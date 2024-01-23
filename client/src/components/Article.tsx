@@ -11,7 +11,13 @@ const Article: React.FC<any> = () => {
             id: articleId
         }
     })
-    
+    if(loading){
+        return (
+            <div>
+                <p>Loading...</p>
+            </div>
+        )
+    }
     if(!articleId || !data){
         console.log(`Error: ${error}`);
         return (

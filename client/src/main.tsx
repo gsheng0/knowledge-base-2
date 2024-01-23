@@ -23,6 +23,7 @@ import "./index.css";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import WriteArticle from "./components/WriteArticle.tsx";
 import AllMyArticles from "./components/AllMyArticles.tsx";
+import { User } from "./components/User.tsx";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -74,7 +75,11 @@ const router = createBrowserRouter([
       {
         path: "/myArticles",
         element: <AllMyArticles/>
-      }
+      },
+      {
+        path: "/user/:userId",
+        element: <User/>
+    }
     ],
   },
 ]);
