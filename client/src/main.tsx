@@ -8,6 +8,7 @@ import SignUp from "./components/SignUp.jsx";
 import Account from "./components/Account.jsx";
 import AllUsers from "./components/AllUsers.tsx";
 import Article from "./components/Article.tsx";
+import AllArticles from "./components/AllArticles.tsx";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -21,9 +22,7 @@ import {
 import "./index.css";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import WriteArticle from "./components/WriteArticle.tsx";
-import AllArticles from "./components/AllArticles.tsx";
 import AllMyArticles from "./components/AllMyArticles.tsx";
-import SearchArticles from "./components/SearchArticles.tsx";
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
@@ -75,10 +74,6 @@ const router = createBrowserRouter([
       {
         path: "/myArticles",
         element: <AllMyArticles/>
-      },
-      {
-        path: "/search",
-        element: <SearchArticles/>
       }
     ],
   },
