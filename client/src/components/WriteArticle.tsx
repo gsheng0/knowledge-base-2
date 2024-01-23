@@ -29,7 +29,7 @@ const WriteArticle: React.FC = () => {
     console.log(JSON.stringify(data));
     return <Navigate to="/" />;
   }
-  console.log(userInfo);
+
 
   return (
     <div>
@@ -56,7 +56,7 @@ const WriteArticle: React.FC = () => {
         <br />
 
         <button type="button" onClick={handleCreateArticle}>
-          Sign In
+          Submit Article
         </button>
       </form>
     </div>

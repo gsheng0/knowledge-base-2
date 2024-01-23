@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { getArticleById } from '../graphql/Queries';
 
@@ -20,11 +20,18 @@ const Article: React.FC<any> = () => {
             </div>
         )    
     }
-
-    console.log(data);
+    const article = data.getArticleById;
     return (
         <div style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
             <h1>Article: {articleId}</h1>
+            <h1>{article.title}</h1>
+            <p>{article.content}</p>
+            <p>
+                <strong>Author:</strong> {article.author.username}
+            </p>
+            <p>
+                <strong>Tags:</strong> {article.tags.join(", ")}
+            </p>
         </div>
     );
 };
